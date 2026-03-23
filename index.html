@@ -1186,9 +1186,9 @@
       }
 
       .sc-footer { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; position: relative; }
-      .sc-qr { font-size: 2.2rem; }
+      .sc-qr { font-size: 2.5rem; }
       .sc-valid { text-align: right; font-size: 0.58rem; opacity: 0.7; }
-      .sc-year { font-size: 0.95rem; font-family: 'Geist', system-ui, sans-serif; font-weight: 800; }
+      .sc-school { font-size: 0.6rem; font-family: 'Geist', system-ui, sans-serif; font-weight: 800; }
 
       .addon-price-wrap {
         text-align: center;
@@ -2265,9 +2265,6 @@
         <div class="feat-grid">
           <!-- Card 1: Admin Dashboard - highlight -->
           <div class="feat-card highlight reveal">
-            <div class="feat-icon" style="color:rgba(255,255,255,0.9);">
-              <i class="bx bxs-dashboard"></i>
-            </div>
             <h3>Dashboard Admin & Keuangan</h3>
             <p>Pusat kontrol lembaga. Kelola data siswa, transaksi SPP, pembukuan tabungan, dan laporan keuangan otomatis, semua dari satu panel.</p>
             <div class="feat-tags">
@@ -2279,18 +2276,17 @@
 
           <!-- Card 2: Kantin -->
           <div class="feat-card reveal reveal-delay-1">
-            <div class="feat-icon icon-blue"><i class="bx bx-qr-scan"></i></div>
             <h3>Kasir Kantin Digital</h3>
             <p>Scan kartu siswa → saldo terdeteksi → transaksi selesai. Tanpa uang tunai, tanpa antrean lama. Dilengkapi manajemen produk, HPP, dan laporan penjualan harian.</p>
             <div class="feat-tags">
-              <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Scan QR/Barcode</span>
               <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Manajemen Produk</span>
+              <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Multi seller</span>
+              <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Laporan Penjualan</span>
             </div>
           </div>
 
           <!-- Card 3: Orang Tua -->
           <div class="feat-card reveal reveal-delay-2">
-            <div class="feat-icon icon-amber"><i class="bx bx-mobile-alt"></i></div>
             <h3>Dashboard Orang Tua</h3>
             <p>Pantau saldo jajan, lihat detail pembelian anak di kantin, cek tabungan, dan bayar tagihan sekolah, langsung dari HP tanpa perlu ke sekolah.</p>
             <div class="feat-tags">
@@ -2303,9 +2299,8 @@
           <div class="feat-card wide reveal reveal-delay-1">
             <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
               <div>
-                <div class="feat-icon icon-purple"><i class="bx bx-piggy-bank"></i></div>
-                <h3>Tabungan Siswa (Mini Bank)</h3>
-                <p>Pisahkan saldo jajan dan tabungan siswa secara otomatis. Sekolah dapat mengelola program menabung, setor dan tarik, dengan laporan transparansi untuk orang tua.</p>
+                <h3>Tabungan Siswa</h3>
+                <p>Biasakan siswa untuk menabung sejak dini. Sekolah dapat mengelola program menabung, setor dan tarik, dengan laporan transparansi untuk orang tua.</p>
               </div>
               <div style="flex:1;min-width:200px;background:var(--paper-2);border-radius:var(--radius-sm);border:2px solid var(--border);padding:16px;margin-top:4px">
                 <div style="font-size:0.72rem;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Rekap Tabungan</div>
@@ -2326,7 +2321,6 @@
 
           <!-- Card 5: Presensi -->
           <div class="feat-card reveal reveal-delay-2">
-            <div class="feat-icon icon-pink"><i class="bx bx-user-check"></i></div>
             <h3>Presensi Guru & Staff</h3>
             <p style="margin-bottom:12px">Opsional terintegrasi: admin melihat data kehadiran guru dan staff langsung dari dashboard yang sama. Rekap otomatis.</p>
             <span class="tag tag-green" style="font-size:0.7rem">Opsional Add-on</span>
@@ -2334,7 +2328,6 @@
 
           <!-- Card 6: Printer -->
           <div class="feat-card reveal reveal-delay-3">
-            <div class="feat-icon icon-green"><i class="bx bx-printer"></i></div>
             <h3>Struk & Printer Thermal</h3>
             <p>Kompatibel dengan printer thermal 58mm Bluetooth maupun USB. Cetak struk transaksi kantin dan bukti pembayaran SPP langsung dari aplikasi.</p>
             <div class="feat-tags">
@@ -2551,10 +2544,10 @@
             <div class="price-divider"></div>
             <ul class="price-feats">
               <li><i class="bx bx-server"></i> <span>Gratis Cloud Server Premium</span></li>
-              <li><i class="bx bx-globe"></i> <span>Subdomain Gratis (.skolapay.com)</span></li>
+              <li><i class="bx bx-globe"></i> <span>Subdomain Gratis (sekolah.skolapay.com)</span></li>
               <li><i class="bx bx-desktop"></i> <span>Akses Multi-Role (Admin, Guru, Kantin, Wali)</span></li>
               <li><i class="bx bx-qr-scan"></i> <span>Kasir Kantin Cashless</span></li>
-              <li><i class="bx bx-piggy-bank"></i> <span>Tabungan & SPP Terintegrasi</span></li>
+              <li><i class="bx bx-bookmark-alt"></i> <span>Tabungan & SPP Terintegrasi</span></li>
               <li><i class="bx bx-mobile-alt"></i> <span>Dashboard Orang Tua Real-time</span></li>
               <li><i class="bx bx-bar-chart-alt-2"></i> <span>Laporan Keuangan Otomatis</span></li>
               <li><i class="bx bx-support"></i> <span>Support Teknis Full Maintenance</span></li>
@@ -2575,15 +2568,15 @@
               </div>
               <div class="sc-body">
                 <div class="sc-photo"><i class="bx bxs-user"></i></div>
-                <div class="sc-role">Siswa / Student</div>
-                <div class="sc-name">Budi<br>Santoso</div>
+                <div class="sc-role">Siswa/Student</div>
+                <div class="sc-name">Ahmad<br>Irfansyah</div>
                 <div class="sc-nis">88210044</div>
               </div>
               <div class="sc-footer">
                 <div class="sc-qr"><i class="bx bx-qr"></i></div>
                 <div class="sc-valid">
-                  <span>Berlaku / Valid</span>
-                  <div class="sc-year">2026</div>
+                  <span>Sekolah</span>
+                  <div class="sc-school">SDN 34 Pringsewu</div>
                 </div>
               </div>
             </div>
@@ -2592,7 +2585,7 @@
               <span class="addon-price-num">Rp 30.000</span>
               <span class="addon-price-unit"> / kartu</span>
             </div>
-            <div class="addon-note">Termasuk Tali Custom.<br>Sekali beli untuk masa sekolah.</div>
+            <div class="addon-note">Termasuk Tali Custom dengan desain nama sekolah/pesantren.<br>Sekali beli selama masa sekolah.</div>
 
             <a href="https://wa.me/628161112148?text=Halo%20saya%20mau%20pesan%20kartu%20siswa%20SkolaPay" class="btn btn-wa" style="width:100%;justify-content:center">
               <i class="bx bxl-whatsapp"></i> Pesan Kartu
@@ -2797,7 +2790,9 @@
           <ul>
             <li><a href="https://wa.me/628161112148">WhatsApp</a></li>
             <li><a href="tel:+628161112148">0816-1112-148</a></li>
-            <li><a href="/cdn-cgi/l/email-protection#5f373a3333301f2c3430333e2f3e26713c3032"><span class="__cf_email__" data-cfemail="b1d9d4dddddef1c2dadeddd0c1d0c89fd2dedc">[email&#160;protected]</span></a></li>
+            <li><a href="/cdn-cgi/l/email-protection#5f373a3333301f36393e3171283a3d71363b">
+    <span class="__cf_email__" data-cfemail="5f373a3333301f36393e3171283a3d71363b">[email&nbsp;protected]</span>
+</a></li>
             <li><a href="#">skolapay.com</a></li>
           </ul>
         </div>
