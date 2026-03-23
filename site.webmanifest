@@ -1,0 +1,30 @@
+{
+  "name": "SkolaPay - Keuangan Sekolah",
+  "short_name": "SkolaPay",
+  "description": "Aplikasi manajemen keuangan sekolah",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo-app.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#10b981",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "orientation": "portrait"
+}
