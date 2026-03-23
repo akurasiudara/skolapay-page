@@ -1,0 +1,2970 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkolaPay - Ekosistem Keuangan Lembaga Profesional</title>
+    <meta name="description" content="Platform keuangan cashless terintegrasi untuk sekolah, pesantren, dan lembaga pendidikan. SPP, kantin digital, tabungan siswa, semua dalam satu platform." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <style>
+      /* ===== DESIGN SYSTEM ===== */
+      :root {
+        --green: #10b981;
+        --green-dark: #059669;
+        --green-xdark: #064e3b;
+        --green-light: #d1fae5;
+        --blue: #3b82f6;
+        --blue-light: #dbeafe;
+        --amber: #f59e0b;
+        --amber-light: #fef3c7;
+        --ink: #0f172a;
+        --ink-2: #334155;
+        --ink-3: #64748b;
+        --ink-4: #94a3b8;
+        --paper: #ffffff;
+        --paper-2: #f8fafc;
+        --border: #e2e8f0;
+        --border-dark: #cbd5e1;
+
+        --radius: 16px;
+        --radius-sm: 8px;
+        --radius-lg: 24px;
+
+        --shadow-flat: 4px 4px 0px var(--ink);
+        --shadow-green: 4px 4px 0px var(--green-dark);
+        --shadow-blue: 4px 4px 0px #1d4ed8;
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Geist', system-ui, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        overflow-x: hidden;
+        line-height: 1.65;
+      }
+
+      h1, h2, h3, h4, h5 {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+
+      /* ===== UTILITIES ===== */
+      .container {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 14px;
+        border-radius: 30px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        border: 1.5px solid currentColor;
+      }
+
+      .tag-green { color: var(--green-dark); background: var(--green-light); border-color: var(--green); }
+      .tag-blue { color: #1d4ed8; background: var(--blue-light); border-color: var(--blue); }
+      .tag-amber { color: #92400e; background: var(--amber-light); border-color: var(--amber); }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 24px;
+        border-radius: 10px;
+        font-family: 'Geist', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1.5px solid transparent;
+        transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+        letter-spacing: -0.01em;
+      }
+
+      .btn-solid {
+        background: var(--green);
+        color: white;
+        border-color: var(--green);
+      }
+
+      .btn-solid:hover {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--border-dark);
+      }
+
+      .btn-outline:hover {
+        background: var(--paper-2);
+        border-color: var(--ink-3);
+      }
+
+      .btn-wa {
+        background: #25d366;
+        color: white;
+        border-color: #25d366;
+      }
+
+      .btn-wa:hover {
+        background: #1ebe5d;
+        border-color: #1ebe5d;
+      }
+
+      /* ===== REVEAL ANIMATIONS ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
+
+      /* ===== NAVBAR ===== */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 0 24px;
+        height: 68px;
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: background 0.3s;
+        backdrop-filter: blur(10px);
+      }
+
+      nav.scrolled {
+        border-bottom-color: var(--green);
+      }
+
+      .nav-inner {
+        max-width: 1160px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+        font-size: 1.6rem;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+
+      .logo-text {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: var(--ink);
+        letter-spacing: -0.04em;
+      }
+
+      .logo-text span { color: var(--green); }
+
+      .nav-links {
+        display: flex;
+        gap: 0;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink-2);
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active-nav {
+        background: var(--green-light);
+        color: var(--green-dark);
+      }
+
+      .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+      .hamburger {
+        display: none;
+        background: none;
+        border: 2px solid var(--border-dark);
+        border-radius: var(--radius-sm);
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 8px;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--ink);
+        border-radius: 2px;
+        transition: 0.3s;
+      }
+
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 2px solid var(--border);
+        padding: 20px 24px;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 999;
+      }
+
+      .mobile-menu.open { display: flex; }
+
+      .mobile-menu a {
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        border: 2px solid var(--border);
+        font-size: 1rem;
+        transition: background 0.2s;
+      }
+
+      .mobile-menu a:hover { background: var(--green-light); }
+
+      /* ===== HERO ===== */
+      .hero {
+        min-height: 100svh;
+        padding-top: 68px;
+        display: flex;
+        align-items: center;
+        background: var(--paper);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Flat decorative strips */
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 45%;
+        height: 100%;
+        background: var(--green-light);
+        z-index: 0;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        padding: 60px 24px;
+        max-width: 1160px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .hero-left {}
+
+      .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--green);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: 2px solid var(--green-dark);
+      }
+
+      .hero-h1 {
+        font-size: clamp(2.8rem, 5vw, 4.5rem);
+        line-height: 1.05;
+        margin-bottom: 24px;
+        color: var(--ink);
+      }
+
+      .hero-h1 .accent {
+        color: var(--green);
+        position: relative;
+        display: inline-block;
+      }
+
+      .hero-h1 .accent::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        height: 4px;
+        width: 100%;
+        background: var(--green);
+        border-radius: 2px;
+        animation: growLine 0.8s 0.5s both ease-out;
+      }
+
+      @keyframes growLine {
+        from { width: 0; }
+        to { width: 100%; }
+      }
+
+      .hero-desc {
+        font-size: 1.1rem;
+        color: var(--ink-2);
+        margin-bottom: 36px;
+        max-width: 480px;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 48px;
+      }
+
+      .hero-proof {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .proof-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--ink-2);
+      }
+
+      .proof-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+      }
+
+      /* ===== HERO ILLUSTRATION ===== */
+      .hero-right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .phone-wrap {
+        position: relative;
+        animation: floatUpDown 4s ease-in-out infinite;
+      }
+
+      @keyframes floatUpDown {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+      }
+
+      .phone-frame {
+        width: 280px;
+        background: var(--ink);
+        border-radius: 36px;
+        padding: 10px;
+        border: 3px solid var(--ink);
+        box-shadow: 0 20px 48px rgba(15,23,42,0.25);
+        position: relative;
+        z-index: 2;
+      }
+
+      .phone-screen {
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .phone-notch {
+        height: 24px;
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .phone-notch-pill {
+        width: 60px;
+        height: 8px;
+        background: #333;
+        border-radius: 4px;
+      }
+
+      .phone-content {
+        padding: 16px;
+      }
+
+      .app-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .app-greeting {
+        font-size: 0.65rem;
+        color: var(--ink-3);
+        font-weight: 600;
+      }
+
+      .app-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--ink);
+        font-family: 'Geist', system-ui, sans-serif;
+      }
+
+      .app-avatar {
+        width: 28px;
+        height: 28px;
+        background: var(--green-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        color: var(--green-dark);
+        font-weight: 700;
+        border: 2px solid var(--green);
+      }
+
+      .balance-card {
+        background: var(--green);
+        border-radius: 12px;
+        padding: 14px;
+        color: white;
+        margin-bottom: 14px;
+        border: 2px solid var(--green-dark);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .balance-card::after {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+      }
+
+      .bc-label { font-size: 0.6rem; opacity: 0.8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+      .bc-amount { font-size: 1.3rem; font-weight: 800; font-family: 'Geist', system-ui, sans-serif; }
+      .bc-sub { font-size: 0.6rem; opacity: 0.75; margin-top: 2px; }
+
+      .app-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .app-tile {
+        background: var(--paper-2);
+        border-radius: 8px;
+        padding: 10px;
+        border: 1.5px solid var(--border);
+        text-align: center;
+      }
+
+      .app-tile i {
+        font-size: 1.1rem;
+        color: var(--green);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .app-tile span {
+        font-size: 0.55rem;
+        font-weight: 700;
+        color: var(--ink-2);
+        line-height: 1.2;
+        display: block;
+      }
+
+      .tx-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tx-row:last-child { border-bottom: none; }
+
+      .tx-info { display: flex; align-items: center; gap: 8px; }
+
+      .tx-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        flex-shrink: 0;
+      }
+
+      .tx-label { font-size: 0.62rem; font-weight: 700; color: var(--ink); }
+      .tx-time { font-size: 0.55rem; color: var(--ink-4); }
+      .tx-amount { font-size: 0.7rem; font-weight: 700; font-family: 'Geist', monospace; }
+      .tx-minus { color: #ef4444; }
+      .tx-plus { color: var(--green-dark); }
+
+      /* Floating cards around phone */
+      .float-card {
+        position: absolute;
+        background: white;
+        border: 2px solid var(--border-dark);
+        border-radius: var(--radius);
+        padding: 12px 16px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        white-space: nowrap;
+        z-index: 3;
+      }
+
+      .float-card-1 {
+        top: 10%;
+        left: -80px;
+        animation: floatCard1 5s ease-in-out infinite;
+      }
+
+      .float-card-2 {
+        bottom: 15%;
+        right: -70px;
+        animation: floatCard2 4.5s ease-in-out infinite;
+      }
+
+      @keyframes floatCard1 {
+        0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+        50% { transform: translate(-6px, -8px) rotate(1deg); }
+      }
+
+      @keyframes floatCard2 {
+        0%, 100% { transform: translate(0, 0) rotate(2deg); }
+        50% { transform: translate(6px, -6px) rotate(-1deg); }
+      }
+
+      .fc-label { font-size: 0.62rem; color: var(--ink-3); font-weight: 600; margin-bottom: 2px; }
+      .fc-value { font-size: 0.9rem; font-weight: 800; font-family: 'Geist', system-ui, sans-serif; color: var(--ink); }
+      .fc-sub { font-size: 0.6rem; color: var(--green-dark); font-weight: 700; margin-top: 2px; }
+      .fc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 4px; animation: pulse 2s infinite; }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.3); }
+      }
+
+      /* ===== STATS SECTION ===== */
+      .stats-bar {
+        background: var(--ink);
+        padding: 0 24px;
+        overflow: hidden;
+      }
+
+      .stats-inner {
+        max-width: 1160px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .stat-item {
+        padding: 32px 24px;
+        text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.08);
+        position: relative;
+      }
+
+      .stat-item:last-child { border-right: none; }
+
+      .stat-num {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--green);
+        display: block;
+        letter-spacing: -0.04em;
+      }
+
+      .stat-label {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.5);
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      /* ===== SECTION STRUCTURE ===== */
+      section {
+        padding: 96px 24px;
+      }
+
+      .section-label {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--green-dark);
+        background: var(--green-light);
+        padding: 4px 12px;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        border-left: 3px solid var(--green);
+      }
+
+      .section-title {
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        margin-bottom: 16px;
+      }
+
+      .section-desc {
+        font-size: 1rem;
+        color: var(--ink-2);
+        max-width: 560px;
+        line-height: 1.7;
+      }
+
+      /* ===== FEATURES ===== */
+      .features { background: var(--paper); }
+
+      .features-head { text-align: center; margin-bottom: 64px; }
+      .features-head .section-desc { margin: 0 auto; }
+
+      .feat-grid {
+        max-width: 1160px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .feat-card {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--green);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .feat-card:hover::before { transform: scaleX(1); }
+
+      .feat-card:hover {
+        border-color: var(--green);
+        background: #fafffe;
+      }
+
+      .feat-card.wide { grid-column: span 2; }
+
+      .feat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 16px;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+
+      .icon-green { color: var(--green); }
+      .icon-blue { color: var(--blue); }
+      .icon-amber { color: var(--amber); }
+      .icon-purple { color: #7c3aed; }
+      .icon-pink { color: #db2777; }
+
+      .feat-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+        font-family: 'Geist', system-ui, sans-serif;
+      }
+
+      .feat-card p {
+        font-size: 0.92rem;
+        color: var(--ink-2);
+        line-height: 1.65;
+      }
+
+      .feat-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 16px;
+      }
+
+      .feat-tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 30px;
+        background: var(--green-light);
+        color: var(--green-dark);
+        border: 1px solid var(--green);
+      }
+
+      .feat-card.highlight {
+        background: var(--green);
+        border-color: var(--green);
+      }
+
+      .feat-card.highlight:hover {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+      }
+
+      .feat-card.highlight h3,
+      .feat-card.highlight p { color: white; }
+
+      .feat-card.highlight .feat-tag {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border-color: rgba(255,255,255,0.4);
+      }
+
+      .feat-card.highlight .feat-icon {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border-color: rgba(255,255,255,0.4);
+      }
+
+      /* ===== HOW IT WORKS ===== */
+      .how {
+        background: var(--paper-2);
+        border-top: 2px solid var(--border);
+        border-bottom: 2px solid var(--border);
+      }
+
+      .how-inner {
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      .how-head { margin-bottom: 56px; }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        position: relative;
+      }
+
+      .steps::before {
+        content: '';
+        position: absolute;
+        top: 32px;
+        left: 8%;
+        right: 8%;
+        height: 2px;
+        background: var(--border-dark);
+        z-index: 0;
+      }
+
+      .step {
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-num {
+        width: 64px;
+        height: 64px;
+        background: white;
+        border: 3px solid var(--ink);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--ink);
+        margin-bottom: 20px;
+        transition: 0.3s;
+      }
+
+      .step:hover .step-num {
+        background: var(--green);
+        border-color: var(--green-dark);
+        color: white;
+      }
+
+      .step h4 {
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+        font-family: 'Geist', system-ui, sans-serif;
+      }
+
+      .step p {
+        font-size: 0.88rem;
+        color: var(--ink-2);
+        line-height: 1.6;
+      }
+
+      /* ===== ROLES ===== */
+      .roles { background: var(--paper); }
+
+      .roles-inner {
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      .roles-head { margin-bottom: 56px; }
+
+      .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .role-card {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px 24px;
+        transition: 0.25s;
+        cursor: default;
+      }
+
+      .role-card:hover {
+        border-color: var(--green);
+        background: #fafffe;
+      }
+
+      .role-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+        font-size: 2rem;
+        margin-bottom: 12px;
+        line-height: 1;
+      }
+
+      .role-card h4 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        font-family: 'Geist', system-ui, sans-serif;
+      }
+
+      .role-feats { list-style: none; }
+
+      .role-feats li {
+        font-size: 0.82rem;
+        color: var(--ink-2);
+        padding: 4px 0;
+        padding-left: 16px;
+        position: relative;
+        line-height: 1.5;
+      }
+
+      .role-feats li::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--green);
+        font-weight: 700;
+        font-size: 0.75rem;
+      }
+
+      /* ===== PRICING ===== */
+      .pricing {
+        background: var(--ink);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pricing::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(16, 185, 129, 0.05);
+        pointer-events: none;
+      }
+
+      .pricing-inner {
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      .pricing-head { margin-bottom: 56px; }
+      .pricing-head .section-label { background: rgba(16,185,129,0.15); }
+      .pricing-head .section-title { color: white; }
+      .pricing-head .section-desc { color: rgba(255,255,255,0.55); }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .price-main {
+        background: white;
+        border: 3px solid var(--green);
+        border-radius: var(--radius-lg);
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .price-badge {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        background: var(--amber);
+        color: white;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 5px 12px;
+        border-radius: 30px;
+        border: 2px solid #d97706;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .price-title {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+        font-family: 'Geist', system-ui, sans-serif;
+      }
+
+      .price-sub {
+        font-size: 0.9rem;
+        color: var(--ink-2);
+        margin-bottom: 28px;
+      }
+
+      .price-num {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .price-rp {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: var(--green-dark);
+        letter-spacing: -0.04em;
+      }
+
+      .price-unit {
+        font-size: 0.9rem;
+        color: var(--ink-3);
+        font-weight: 500;
+      }
+
+      .price-slash {
+        font-size: 0.88rem;
+        color: var(--ink-3);
+        text-decoration: line-through;
+        margin-bottom: 28px;
+      }
+
+      .price-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 28px 0;
+      }
+
+      .price-feats {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+
+      .price-feats li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--ink);
+      }
+
+      .price-feats li i {
+        color: var(--green);
+        font-size: 1.1rem;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      .price-addon {
+        background: rgba(16, 185, 129, 0.06);
+        border: 2px solid rgba(255,255,255,0.08);
+        border-radius: var(--radius);
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+
+      /* Student Card Mockup */
+      .student-card {
+        width: 200px;
+        height: 310px;
+        background: linear-gradient(150deg, #10b981, #047857);
+        border-radius: 18px;
+        padding: 22px;
+        color: white;
+        border: 2px solid var(--green-dark);
+        box-shadow: 0 16px 40px rgba(16,185,129,0.25);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 auto 20px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .student-card:hover {
+        transform: translateY(-4px) rotate(-1deg);
+        box-shadow: 0 12px 32px rgba(16,185,129,0.3);
+      }
+
+      .student-card::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 120px;
+        height: 120px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+      }
+
+      .sc-logo {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 1;
+        position: relative;
+      }
+
+      .sc-body { z-index: 1; position: relative; }
+
+      .sc-photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        border: 2px solid rgba(255,255,255,0.3);
+        font-size: 1.5rem;
+      }
+
+      .sc-role { font-size: 0.58rem; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+      .sc-name { font-family: 'Geist', system-ui, sans-serif; font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
+      .sc-nis {
+        display: inline-block;
+        background: white;
+        color: var(--green-dark);
+        font-family: 'Geist', monospace;
+        font-size: 0.72rem;
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-top: 6px;
+      }
+
+      .sc-footer { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; position: relative; }
+      .sc-qr { font-size: 2.2rem; }
+      .sc-valid { text-align: right; font-size: 0.58rem; opacity: 0.7; }
+      .sc-year { font-size: 0.95rem; font-family: 'Geist', system-ui, sans-serif; font-weight: 800; }
+
+      .addon-price-wrap {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      .addon-price-num {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: white;
+      }
+
+      .addon-price-unit {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.5);
+      }
+
+      .addon-note {
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.5);
+        text-align: center;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      /* ===== FAQ ===== */
+      .faq { background: var(--paper-2); border-top: 2px solid var(--border); }
+
+      .faq-inner {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .faq-head { text-align: center; margin-bottom: 48px; }
+
+      .faq-list { display: flex; flex-direction: column; gap: 12px; }
+
+      .faq-item {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .faq-item.open {
+        border-color: var(--green);
+      }
+
+      .faq-q {
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        cursor: pointer;
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--ink);
+        text-align: left;
+        transition: background 0.2s;
+      }
+
+      .faq-q:hover { background: var(--green-light); }
+
+      .faq-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        transition: transform 0.3s, color 0.3s;
+      }
+
+      .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+        color: var(--green-dark);
+      }
+
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s;
+        padding: 0 24px;
+      }
+
+      .faq-a-inner {
+        padding-bottom: 20px;
+        font-size: 0.92rem;
+        color: var(--ink-2);
+        line-height: 1.7;
+      }
+
+      .faq-item.open .faq-a {
+        max-height: 400px;
+      }
+
+      /* ===== CTA SECTION ===== */
+      .cta-section {
+        background: var(--green);
+        padding: 80px 24px;
+        text-align: center;
+        border-top: 3px solid var(--green-dark);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-section::before,
+      .cta-section::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        pointer-events: none;
+      }
+
+      .cta-section::before { width: 400px; height: 400px; top: -200px; left: -100px; }
+      .cta-section::after { width: 300px; height: 300px; bottom: -150px; right: -50px; }
+
+      .cta-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+
+      .cta-section h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: white;
+        margin-bottom: 16px;
+      }
+
+      .cta-section p {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.05rem;
+        margin-bottom: 36px;
+        line-height: 1.6;
+      }
+
+      .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+      .btn-white {
+        background: white;
+        color: var(--green-dark);
+        border-color: white;
+      }
+
+      .btn-white:hover {
+        background: var(--green-light);
+        border-color: var(--green-light);
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: var(--ink);
+        padding: 48px 24px 32px;
+        border-top: 2px solid rgba(255,255,255,0.06);
+      }
+
+      .footer-inner {
+        max-width: 1160px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 48px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        margin-bottom: 32px;
+      }
+
+      .footer-brand {}
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        text-decoration: none;
+      }
+
+      .footer-logo-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .footer-logo-text {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: white;
+      }
+
+      .footer-brand p {
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.4);
+        line-height: 1.65;
+        margin-bottom: 20px;
+      }
+
+      .footer-socials { display: flex; gap: 10px; }
+
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.5);
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .social-btn:hover {
+        background: var(--green);
+        border-color: var(--green);
+        color: white;
+      }
+
+      .footer-col h5 {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 0.9rem;
+        color: white;
+        margin-bottom: 16px;
+        font-weight: 800;
+      }
+
+      .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+      .footer-col ul a {
+        text-decoration: none;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.4);
+        transition: color 0.2s;
+        font-weight: 500;
+      }
+
+      .footer-col ul a:hover { color: var(--green); }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1160px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .footer-bottom p {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.25);
+      }
+
+      .footer-bottom span {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.25);
+      }
+
+      /* ===== MARQUEE ===== */
+      .marquee-wrap {
+        background: var(--green);
+        overflow: hidden;
+        border-top: 2px solid var(--green-dark);
+        border-bottom: 2px solid var(--green-dark);
+        padding: 14px 0;
+      }
+
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marqueeScroll 25s linear infinite;
+      }
+
+      .marquee-track:hover { animation-play-state: paused; }
+
+      @keyframes marqueeScroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      .marquee-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 28px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: white;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+      }
+
+      .marquee-sep {
+        color: rgba(255,255,255,0.4);
+        font-size: 0.7rem;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .feat-grid { grid-template-columns: repeat(2, 1fr); }
+        .feat-card.wide { grid-column: span 1; }
+        .roles-grid { grid-template-columns: repeat(2, 1fr); }
+        .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+        .pricing-grid { grid-template-columns: 1fr; }
+        .price-addon { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+        .addon-price-num { color: white; }
+      }
+
+      @media (max-width: 768px) {
+        section { padding: 72px 20px; }
+
+        nav { padding: 0 20px; }
+
+        .hero::before { width: 100%; height: 40%; top: auto; bottom: 0; right: 0; }
+
+        .hero-inner {
+          grid-template-columns: 1fr;
+          gap: 48px;
+          padding: 48px 20px;
+          text-align: center;
+        }
+
+        .hero-actions { justify-content: center; }
+        .hero-proof { justify-content: center; }
+
+        .hero-right { order: -1; }
+
+        .phone-frame { width: 220px; }
+
+        .float-card-1 { display: none; }
+        .float-card-2 { display: none; }
+
+        .stats-inner { grid-template-columns: repeat(2, 1fr); }
+        .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .stat-item:nth-child(2n) { }
+        .stat-item:last-child { border-bottom: none; }
+
+        .feat-grid { grid-template-columns: 1fr; }
+        .feat-card.wide { grid-column: span 1; }
+
+        .steps { grid-template-columns: repeat(2, 1fr); }
+        .steps::before { display: none; }
+
+        .roles-grid { grid-template-columns: 1fr; }
+
+        .price-feats { grid-template-columns: 1fr; }
+
+        .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+
+        .nav-links, .nav-cta { display: none; }
+        .hamburger { display: flex; }
+
+        .footer-bottom { flex-direction: column; text-align: center; }
+
+        .section-title { font-size: 1.8rem; }
+
+        .hero-h1 { font-size: 2.4rem; }
+      }
+
+      @media (max-width: 480px) {
+        .steps { grid-template-columns: 1fr; }
+        .stats-inner { grid-template-columns: repeat(2, 1fr); }
+        .cta-actions { flex-direction: column; align-items: center; }
+        .hero-actions { flex-direction: column; align-items: center; }
+      }
+
+      /* ===== BEFORE / AFTER ===== */
+      .compare { background: var(--paper); border-top: 2px solid var(--border); }
+      .compare-inner { max-width: 1160px; margin: 0 auto; }
+      .compare-head { text-align: center; margin-bottom: 56px; }
+
+      .compare-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 0;
+        align-items: stretch;
+      }
+
+      .compare-side {
+        border: 2px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+
+      .compare-side.before { border-color: #fca5a5; }
+      .compare-side.after  { border-color: var(--green); }
+
+      .compare-head-bar {
+        padding: 14px 24px;
+        font-weight: 800;
+        font-size: 0.88rem;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .compare-side.before .compare-head-bar { background: #fee2e2; color: #991b1b; }
+      .compare-side.after  .compare-head-bar { background: var(--green-light); color: var(--green-xdark); }
+
+      .compare-body { padding: 8px 0; background: white; }
+
+      .compare-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 13px 24px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+        color: var(--ink-2);
+        font-weight: 500;
+        line-height: 1.5;
+      }
+
+      .compare-row:last-child { border-bottom: none; }
+
+      .compare-row i { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+      .compare-side.before .compare-row i { color: #ef4444; }
+      .compare-side.after  .compare-row i { color: var(--green); }
+
+      .compare-vs {
+        width: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .vs-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        border: 3px solid white;
+        box-shadow: 0 0 0 2px var(--ink);
+      }
+
+      @media (max-width: 768px) {
+        .compare-grid { grid-template-columns: 1fr; }
+        .compare-vs { width: 100%; height: 40px; }
+        .compare-side.after { box-shadow: none; }
+      }
+
+      /* ===== CALCULATOR ===== */
+      .calc-section { background: var(--paper-2); border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); }
+      .calc-inner { max-width: 840px; margin: 0 auto; }
+      .calc-head { text-align: center; margin-bottom: 48px; }
+
+      .calc-box {
+        background: white;
+        border: 2px solid var(--border-dark);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+
+      .calc-top {
+        padding: 36px 40px;
+        border-bottom: 2px solid var(--border);
+      }
+
+      .calc-label {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--ink-2);
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .calc-val-display {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--green-dark);
+        font-variant-numeric: tabular-nums;
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        outline: none;
+        margin: 16px 0;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--green);
+        border: 3px solid white;
+        box-shadow: 0 0 0 2px var(--green);
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+      .range-marks {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--ink-4);
+        font-weight: 600;
+        margin-top: -6px;
+      }
+
+      .calc-bottom {
+        background: var(--ink);
+        padding: 32px 40px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .calc-result-item { text-align: center; }
+
+      .calc-result-label {
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.45);
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .calc-result-num {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--green);
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .calc-result-sub {
+        font-size: 0.72rem;
+        color: rgba(255,255,255,0.3);
+        margin-top: 3px;
+      }
+
+      .calc-result-item.highlight .calc-result-num {
+        font-size: 1.7rem;
+        color: white;
+      }
+
+      .calc-divider {
+        width: 1px;
+        background: rgba(255,255,255,0.08);
+        height: 100%;
+      }
+
+      @media (max-width: 600px) {
+        .calc-top { padding: 24px; }
+        .calc-bottom { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+        .calc-result-item { padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .calc-result-item:last-child { border-bottom: none; padding-bottom: 0; }
+      }
+
+      /* ===== TESTIMONIALS ===== */
+      .testimonials { background: var(--paper); }
+      .testimonials-inner { max-width: 1160px; margin: 0 auto; }
+      .testimonials-head { margin-bottom: 48px; }
+
+      .testi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .testi-card {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        transition: 0.25s;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .testi-card:hover {
+        border-color: var(--green);
+        background: #fafffe;
+      }
+
+      .testi-stars {
+        display: flex;
+        gap: 3px;
+        color: var(--amber);
+        font-size: 0.9rem;
+      }
+
+      .testi-quote {
+        font-size: 0.92rem;
+        color: var(--ink-2);
+        line-height: 1.7;
+        font-style: italic;
+        flex: 1;
+      }
+
+      .testi-quote::before { content: '\201C'; color: var(--green); font-size: 1.3rem; font-style: normal; line-height: 0; vertical-align: -4px; margin-right: 2px; }
+      .testi-quote::after  { content: '\201D'; color: var(--green); font-size: 1.3rem; font-style: normal; line-height: 0; vertical-align: -4px; margin-left: 2px; }
+
+      .testi-person {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .testi-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--green);
+        border: 2px solid var(--green-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .testi-name {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.3;
+      }
+
+      .testi-school {
+        font-size: 0.78rem;
+        color: var(--ink-3);
+        font-weight: 500;
+      }
+
+      .testi-role-badge {
+        margin-left: auto;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 30px;
+        background: var(--green-light);
+        color: var(--green-dark);
+        border: 1px solid var(--green);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      @media (max-width: 900px) {
+        .testi-grid { grid-template-columns: 1fr; }
+      }
+
+      /* ===== WA FLOAT ===== */
+      .wa-float {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+      }
+
+      .wa-float-tooltip {
+        background: var(--ink);
+        color: white;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: opacity 0.25s, transform 0.25s;
+        pointer-events: none;
+      }
+
+      .wa-float:hover .wa-float-tooltip {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .wa-float-btn {
+        width: 56px;
+        height: 56px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.7rem;
+        text-decoration: none;
+        border: 3px solid #128c5e;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+        transition: transform 0.2s, box-shadow 0.2s;
+        animation: waPop 0.5s 2s both cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      @keyframes waPop {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+
+      .wa-float-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6);
+      }
+
+      .wa-float-btn::after {
+        content: '';
+        position: absolute;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(37, 211, 102, 0.3);
+        animation: waPulse 2.5s infinite;
+      }
+
+      @keyframes waPulse {
+        0%   { transform: scale(1); opacity: 0.6; }
+        100% { transform: scale(1.8); opacity: 0; }
+      }
+
+      @media (max-width: 480px) {
+        .wa-float { bottom: 20px; right: 20px; }
+        .wa-float-btn { width: 50px; height: 50px; font-size: 1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <div class="nav-inner">
+        <a href="#" class="logo">
+          <div class="logo-icon"><i class="bx bxs-wallet-alt"></i></div>
+          <span class="logo-text">Skola<span>Pay</span></span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#fitur">Fitur</a></li>
+          <li><a href="#cara-kerja">Cara Kerja</a></li>
+          <li><a href="#testimoni">Testimoni</a></li>
+          <li><a href="#harga">Harga</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20demo%20SkolaPay" class="btn btn-solid" style="padding:10px 20px; font-size:0.88rem;">
+            <i class="bx bxl-whatsapp"></i> Demo Gratis
+          </a>
+        </div>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#fitur" class="mobile-link">Fitur</a>
+      <a href="#cara-kerja" class="mobile-link">Cara Kerja</a>
+      <a href="#testimoni" class="mobile-link">Testimoni</a>
+      <a href="#harga" class="mobile-link">Harga</a>
+      <a href="#faq" class="mobile-link">FAQ</a>
+      <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20demo%20SkolaPay" class="btn btn-wa" style="justify-content:center">
+        <i class="bx bxl-whatsapp"></i> Hubungi Kami
+      </a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-eyebrow reveal">
+            <div class="hero-badge">
+              <i class="bx bxs-zap"></i> Platform Keuangan Digital
+            </div>
+          </div>
+          <h1 class="hero-h1 reveal reveal-delay-1">
+            Ekosistem Keuangan<br>
+            Lembaga <span class="accent">Cashless</span>
+          </h1>
+          <p class="hero-desc reveal reveal-delay-2">
+            Satu platform untuk SPP, kantin digital, tabungan siswa, dan pemantauan real-time orang tua. Dirancang khusus untuk sekolah, pesantren, dan lembaga pendidikan.
+          </p>
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20coba%20SkolaPay" class="btn btn-solid">
+              <i class="bx bx-rocket"></i> Coba Gratis
+            </a>
+            <a href="#fitur" class="btn btn-outline">
+              Lihat Fitur <i class="bx bx-down-arrow-alt"></i>
+            </a>
+          </div>
+          <div class="hero-proof reveal reveal-delay-4">
+            <div class="proof-item"><span class="proof-dot"></span> Tanpa biaya setup</div>
+            <div class="proof-item"><span class="proof-dot"></span> Langsung aktif</div>
+            <div class="proof-item"><span class="proof-dot"></span> Support penuh</div>
+          </div>
+        </div>
+
+        <div class="hero-right reveal reveal-delay-2">
+          <!-- Floating Cards -->
+          <div class="float-card float-card-1">
+            <div class="fc-label">Saldo Jajan</div>
+            <div class="fc-value">Rp 85.000</div>
+            <div class="fc-sub"><span class="fc-dot"></span> Live update</div>
+          </div>
+          <div class="float-card float-card-2">
+            <div class="fc-label">Transaksi Hari Ini</div>
+            <div class="fc-value">247</div>
+            <div class="fc-sub"><span class="fc-dot"></span> Kantin aktif</div>
+          </div>
+
+          <!-- Phone Mockup: Actual Parent Dashboard -->
+          <div class="phone-wrap">
+            <div class="phone-frame">
+              <div class="phone-screen">
+
+                <!-- Status bar -->
+                <div style="background:#fff;padding:8px 14px 0;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.52rem;font-weight:700;color:var(--ink);font-family:'Geist',system-ui,sans-serif;">9:41</span>
+                  <div style="display:flex;gap:4px;align-items:center;">
+                    <i class="bx bx-signal-5" style="font-size:0.65rem;color:var(--ink);"></i>
+                    <i class="bx bx-wifi" style="font-size:0.65rem;color:var(--ink);"></i>
+                    <i class="bx bx-battery" style="font-size:0.65rem;color:var(--ink);"></i>
+                  </div>
+                </div>
+
+                <!-- App Header -->
+                <div style="background:#fff;padding:10px 14px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f1f5f9;">
+                  <div style="display:flex;align-items:center;gap:9px;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:white;flex-shrink:0;border:2px solid #d1fae5;">SA</div>
+                    <div>
+                      <div style="font-size:0.5rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;line-height:1;">SELAMAT DATANG</div>
+                      <div style="font-size:0.82rem;font-weight:800;color:#0f172a;letter-spacing:-0.02em;font-family:'Geist',system-ui,sans-serif;">GEISA</div>
+                    </div>
+                  </div>
+                  <div style="width:26px;height:26px;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;">
+                    <i class="bx bx-id-card" style="font-size:0.85rem;color:#64748b;"></i>
+                  </div>
+                </div>
+
+                <div style="padding:12px 14px;background:#f8fafc;flex:1;overflow:hidden;">
+
+                  <!-- Balance Card -->
+                  <div style="background:var(--green);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden;">
+                    <div style="position:absolute;top:-18px;right:-18px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.1);"></div>
+                    <div style="position:absolute;bottom:-12px;left:30px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.07);"></div>
+
+                    <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;position:relative;">
+                      <i class="bx bx-credit-card" style="font-size:0.7rem;color:rgba(255,255,255,0.85);"></i>
+                      <span style="font-size:0.58rem;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.5px;">Saldo SkolaPay</span>
+                    </div>
+                    <div style="font-size:1.35rem;font-weight:800;color:white;letter-spacing:-0.03em;font-family:'Geist',system-ui,sans-serif;position:relative;margin-bottom:10px;">Rp 24.000</div>
+
+                    <!-- Progress bar -->
+                    <div style="height:4px;background:rgba(255,255,255,0.25);border-radius:2px;margin-bottom:7px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;height:100%;width:0%;background:white;border-radius:2px;"></div>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;position:relative;">
+                      <div>
+                        <div style="font-size:0.5rem;color:rgba(255,255,255,0.75);font-weight:600;">Terpakai: <span style="color:white;font-weight:800;">Rp 0</span></div>
+                        <div style="font-size:0.5rem;color:rgba(255,255,255,0.75);margin-top:1px;">Sisa Limit:</div>
+                      </div>
+                      <div style="font-size:0.5rem;color:rgba(255,255,255,0.75);font-weight:600;text-align:right;">Limit: <span style="color:white;font-weight:800;">Rp 10.000</span></div>
+                    </div>
+                  </div>
+
+                  <!-- Riwayat Transaksi -->
+                  <div style="background:white;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">
+                    <!-- Header -->
+                    <div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f1f5f9;">
+                      <span style="font-size:0.72rem;font-weight:800;color:#0f172a;font-family:'Geist',system-ui,sans-serif;">Riwayat Transaksi</span>
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <button style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:0.6rem;padding:2px 4px;"><i class="bx bx-chevron-left"></i></button>
+                        <span style="font-size:0.62rem;font-weight:700;color:#334155;">9 Feb</span>
+                        <button style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:0.6rem;padding:2px 4px;"><i class="bx bx-chevron-right"></i></button>
+                      </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div style="padding:0 12px;">
+                      <!-- Tx 1 -->
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f8fafc;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <div style="width:26px;height:26px;border-radius:7px;background:#fef9c3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bx bx-cart" style="font-size:0.8rem;color:#ca8a04;"></i>
+                          </div>
+                          <div>
+                            <div style="font-size:0.65rem;font-weight:700;color:#0f172a;line-height:1.2;">Nextar Cheesecake Pie (1)</div>
+                            <div style="font-size:0.55rem;color:#94a3b8;margin-top:1px;">12.42</div>
+                          </div>
+                        </div>
+                        <span style="font-size:0.68rem;font-weight:800;color:#ef4444;font-family:'Geist',system-ui,sans-serif;">-Rp 2.000</span>
+                      </div>
+
+                      <!-- Tx 2 -->
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f8fafc;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <div style="width:26px;height:26px;border-radius:7px;background:#fef9c3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bx bx-cart" style="font-size:0.8rem;color:#ca8a04;"></i>
+                          </div>
+                          <div>
+                            <div style="font-size:0.65rem;font-weight:700;color:#0f172a;line-height:1.2;">Chocolatos (1)</div>
+                            <div style="font-size:0.55rem;color:#94a3b8;margin-top:1px;">12.28</div>
+                          </div>
+                        </div>
+                        <span style="font-size:0.68rem;font-weight:800;color:#ef4444;font-family:'Geist',system-ui,sans-serif;">-Rp 1.500</span>
+                      </div>
+
+                      <!-- Tx 3 -->
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f8fafc;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <div style="width:26px;height:26px;border-radius:7px;background:#fef9c3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bx bx-cart" style="font-size:0.8rem;color:#ca8a04;"></i>
+                          </div>
+                          <div>
+                            <div style="font-size:0.65rem;font-weight:700;color:#0f172a;line-height:1.2;">Pudding (1), Choco Pie (1)</div>
+                            <div style="font-size:0.55rem;color:#94a3b8;margin-top:1px;">08.42</div>
+                          </div>
+                        </div>
+                        <span style="font-size:0.68rem;font-weight:800;color:#ef4444;font-family:'Geist',system-ui,sans-serif;">-Rp 4.000</span>
+                      </div>
+
+                      <!-- Tx 4: Top Up -->
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <div style="width:26px;height:26px;border-radius:7px;background:#d1fae5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bx bx-plus" style="font-size:0.85rem;color:#059669;"></i>
+                          </div>
+                          <div>
+                            <div style="font-size:0.65rem;font-weight:700;color:#0f172a;line-height:1.2;">Topup Saldo Jajan</div>
+                            <div style="font-size:0.55rem;color:#94a3b8;margin-top:1px;">08.41</div>
+                          </div>
+                        </div>
+                        <span style="font-size:0.68rem;font-weight:800;color:#059669;font-family:'Geist',system-ui,sans-serif;">+Rp 50.000</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div style="background:white;border-top:1px solid #e2e8f0;display:flex;align-items:center;padding:8px 6px 10px;">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <i class="bx bxs-home" style="font-size:1.1rem;color:var(--green);"></i>
+                    <span style="font-size:0.48rem;font-weight:700;color:var(--green);">Beranda</span>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <i class="bx bx-receipt" style="font-size:1.1rem;color:#94a3b8;"></i>
+                    <span style="font-size:0.48rem;font-weight:600;color:#94a3b8;">Tagihan</span>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:32px;height:32px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-top:-8px;border:2px solid #d1fae5;">
+                      <i class="bx bx-qr-scan" style="font-size:1rem;color:white;"></i>
+                    </div>
+                    <span style="font-size:0.48rem;font-weight:600;color:#94a3b8;">Bayar</span>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <i class="bx bx-wallet" style="font-size:1.1rem;color:#94a3b8;"></i>
+                    <span style="font-size:0.48rem;font-weight:600;color:#94a3b8;">Tabungan</span>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <i class="bx bx-user-circle" style="font-size:1.1rem;color:#94a3b8;"></i>
+                    <span style="font-size:0.48rem;font-weight:600;color:#94a3b8;">Profil</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE STRIP -->
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <!-- First set -->
+        <span class="marquee-item"><i class="bx bx-qr-scan"></i> Kantin Cashless</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-wallet"></i> Tabungan Siswa</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-receipt"></i> Pembayaran SPP</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-mobile-alt"></i> Dashboard Orang Tua</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-user-check"></i> Presensi Digital</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-id-card"></i> Kartu Siswa Smart</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-bar-chart-alt"></i> Laporan Keuangan</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-printer"></i> Struk Thermal</span>
+        <span class="marquee-sep">✦</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="marquee-item"><i class="bx bx-qr-scan"></i> Kantin Cashless</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-wallet"></i> Tabungan Siswa</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-receipt"></i> Pembayaran SPP</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-mobile-alt"></i> Dashboard Orang Tua</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-user-check"></i> Presensi Digital</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-id-card"></i> Kartu Siswa Smart</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-bar-chart-alt"></i> Laporan Keuangan</span>
+        <span class="marquee-sep">✦</span>
+        <span class="marquee-item"><i class="bx bx-printer"></i> Struk Thermal</span>
+        <span class="marquee-sep">✦</span>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stats-inner">
+        <div class="stat-item reveal">
+          <span class="stat-num" data-target="1200">0</span>
+          <span class="stat-label">Siswa Terdaftar</span>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+          <span class="stat-num" data-target="99">0</span>
+          <span class="stat-label" style="color:rgba(255,255,255,0.5)">Kepuasan Sekolah</span>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <span class="stat-num" data-target="4">0</span>
+          <span class="stat-label">Modul Terintegrasi</span>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <span class="stat-num" data-target="24">0</span>
+          <span class="stat-label">Jam Support Aktif</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="fitur" class="features">
+      <div class="container">
+        <div class="features-head">
+          <div class="section-label reveal">Fitur Utama</div>
+          <h2 class="section-title reveal reveal-delay-1">Satu Platform,<br>Semua Kebutuhan Lembaga</h2>
+          <p class="section-desc reveal reveal-delay-2">Dirancang bersama praktisi pendidikan untuk memenuhi kebutuhan nyata sekolah, pesantren, dan boarding school.</p>
+        </div>
+
+        <div class="feat-grid">
+          <!-- Card 1: Admin Dashboard - highlight -->
+          <div class="feat-card highlight reveal">
+            <div class="feat-icon" style="color:rgba(255,255,255,0.9);">
+              <i class="bx bxs-dashboard"></i>
+            </div>
+            <h3>Dashboard Admin & Keuangan</h3>
+            <p>Pusat kontrol lembaga. Kelola data siswa, transaksi SPP, pembukuan tabungan, dan laporan keuangan otomatis, semua dari satu panel.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">Laporan Otomatis</span>
+              <span class="feat-tag">Multi Admin</span>
+              <span class="feat-tag">Real-time</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Kantin -->
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-icon icon-blue"><i class="bx bx-qr-scan"></i></div>
+            <h3>Kasir Kantin Digital</h3>
+            <p>Scan kartu siswa → saldo terdeteksi → transaksi selesai. Tanpa uang tunai, tanpa antrean lama. Dilengkapi manajemen produk, HPP, dan laporan penjualan harian.</p>
+            <div class="feat-tags">
+              <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Scan QR/Barcode</span>
+              <span class="feat-tag" style="background:var(--blue-light);color:#1d4ed8;border-color:var(--blue)">Manajemen Produk</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Orang Tua -->
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-icon icon-amber"><i class="bx bx-mobile-alt"></i></div>
+            <h3>Dashboard Orang Tua</h3>
+            <p>Pantau saldo jajan, lihat detail pembelian anak di kantin, cek tabungan, dan bayar tagihan sekolah, langsung dari HP tanpa perlu ke sekolah.</p>
+            <div class="feat-tags">
+              <span class="feat-tag" style="background:var(--amber-light);color:#92400e;border-color:var(--amber)">Notifikasi Real-time</span>
+              <span class="feat-tag" style="background:var(--amber-light);color:#92400e;border-color:var(--amber)">Topup Mudah</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Tabungan - wide -->
+          <div class="feat-card wide reveal reveal-delay-1">
+            <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+              <div>
+                <div class="feat-icon icon-purple"><i class="bx bx-piggy-bank"></i></div>
+                <h3>Tabungan Siswa (Mini Bank)</h3>
+                <p>Pisahkan saldo jajan dan tabungan siswa secara otomatis. Sekolah dapat mengelola program menabung, setor dan tarik, dengan laporan transparansi untuk orang tua.</p>
+              </div>
+              <div style="flex:1;min-width:200px;background:var(--paper-2);border-radius:var(--radius-sm);border:2px solid var(--border);padding:16px;margin-top:4px">
+                <div style="font-size:0.72rem;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Rekap Tabungan</div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.85rem">
+                  <span style="color:var(--ink-2);font-weight:500">Total Saldo Siswa</span>
+                  <span style="font-weight:700;color:var(--green-dark)">Rp 45.200.000</span>
+                </div>
+                <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:12px">
+                  <div style="height:100%;width:72%;background:var(--green);border-radius:3px;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-3)">
+                  <span>Target: Rp 63M</span>
+                  <span>72% tercapai</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Presensi -->
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-icon icon-pink"><i class="bx bx-user-check"></i></div>
+            <h3>Presensi Guru & Staff</h3>
+            <p style="margin-bottom:12px">Opsional terintegrasi: admin melihat data kehadiran guru dan staff langsung dari dashboard yang sama. Rekap otomatis.</p>
+            <span class="tag tag-green" style="font-size:0.7rem">Opsional Add-on</span>
+          </div>
+
+          <!-- Card 6: Printer -->
+          <div class="feat-card reveal reveal-delay-3">
+            <div class="feat-icon icon-green"><i class="bx bx-printer"></i></div>
+            <h3>Struk & Printer Thermal</h3>
+            <p>Kompatibel dengan printer thermal 58mm Bluetooth maupun USB. Cetak struk transaksi kantin dan bukti pembayaran SPP langsung dari aplikasi.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">58mm Bluetooth</span>
+              <span class="feat-tag">USB Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE / AFTER -->
+    <section class="compare">
+      <div class="compare-inner">
+        <div class="compare-head">
+          <div class="section-label reveal">Transformasi Nyata</div>
+          <h2 class="section-title reveal reveal-delay-1">Sebelum vs Sesudah<br>Pakai SkolaPay</h2>
+        </div>
+
+        <div class="compare-grid reveal">
+          <!-- BEFORE -->
+          <div class="compare-side before">
+            <div class="compare-head-bar">
+              <i class="bx bx-x-circle"></i> Sebelum SkolaPay
+            </div>
+            <div class="compare-body">
+              <div class="compare-row"><i class="bx bx-x"></i> Orang tua titip uang jajan tiap hari, rawan hilang</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Antrian panjang di kasir kantin tiap jam istirahat</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Rekap SPP manual di buku atau spreadsheet</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Orang tua tidak tahu anak jajan apa dan berapa</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Tabungan siswa dikelola manual, rawan selisih</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Laporan keuangan makan waktu berjam-jam</div>
+              <div class="compare-row"><i class="bx bx-x"></i> Presensi guru masih pakai kertas, mudah dimanipulasi</div>
+            </div>
+          </div>
+
+          <!-- VS -->
+          <div class="compare-vs">
+            <div class="vs-badge">VS</div>
+          </div>
+
+          <!-- AFTER -->
+          <div class="compare-side after">
+            <div class="compare-head-bar">
+              <i class="bx bx-check-circle"></i> Sesudah SkolaPay
+            </div>
+            <div class="compare-body">
+              <div class="compare-row"><i class="bx bx-check"></i> Saldo jajan diisi dari HP, aman dan terkontrol</div>
+              <div class="compare-row"><i class="bx bx-check"></i> Scan kartu 2 detik, transaksi selesai, antrean hilang</div>
+              <div class="compare-row"><i class="bx bx-check"></i> SPP tercatat otomatis, dashboard real-time</div>
+              <div class="compare-row"><i class="bx bx-check"></i> Orang tua lihat rincian belanja anak langsung di HP</div>
+              <div class="compare-row"><i class="bx bx-check"></i> Tabungan siswa terkelola digital, transparan dan akurat</div>
+              <div class="compare-row"><i class="bx bx-check"></i> Laporan keuangan tergenerate otomatis kapan saja</div>
+              <div class="compare-row"><i class="bx bx-check"></i> Presensi digital terintegrasi, rekap langsung tersedia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->    <section id="cara-kerja" class="how">
+      <div class="how-inner">
+        <div class="how-head">
+          <div class="section-label reveal">Cara Kerja</div>
+          <h2 class="section-title reveal reveal-delay-1">Sederhana. Cepat.<br>Langsung Jalan.</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-num">01</div>
+            <h4>Daftar & Setup</h4>
+            <p>Isi data sekolah, import data siswa, dan platform langsung siap digunakan. Proses onboarding dipandu tim kami.</p>
+          </div>
+          <div class="step reveal reveal-delay-1">
+            <div class="step-num">02</div>
+            <h4>Cetak Kartu Siswa</h4>
+            <p>Setiap siswa mendapat kartu identitas pintar dengan QR/barcode unik yang berfungsi sebagai alat pembayaran kantin.</p>
+          </div>
+          <div class="step reveal reveal-delay-2">
+            <div class="step-num">03</div>
+            <h4>Orang Tua Top Up</h4>
+            <p>Orang tua isi saldo jajan anak lewat HP. Saldo langsung aktif dan siap digunakan di kantin sekolah.</p>
+          </div>
+          <div class="step reveal reveal-delay-3">
+            <div class="step-num">04</div>
+            <h4>Kantin Scan & Jajan</h4>
+            <p>Kasir scan kartu siswa, pilih menu, transaksi selesai. Orang tua langsung dapat notifikasi di HP mereka.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section class="roles">
+      <div class="roles-inner">
+        <div class="roles-head">
+          <div class="section-label reveal">Akses Multi-Role</div>
+          <h2 class="section-title reveal reveal-delay-1">Satu Sistem,<br>Semua Peran Terlayani</h2>
+        </div>
+        <div class="roles-grid">
+          <div class="role-card reveal">
+            <h4>Admin Sekolah</h4>
+            <ul class="role-feats">
+              <li>Kelola data siswa & keuangan</li>
+              <li>Laporan transaksi otomatis</li>
+              <li>Atur tagihan & pembayaran SPP</li>
+              <li>Monitor seluruh aktivitas</li>
+            </ul>
+          </div>
+          <div class="role-card reveal reveal-delay-1">
+            <h4>Petugas Kantin</h4>
+            <ul class="role-feats">
+              <li>Scan kartu siswa untuk bayar</li>
+              <li>Manajemen produk & HPP</li>
+              <li>Input pembelian bahan</li>
+              <li>Laporan penjualan harian</li>
+            </ul>
+          </div>
+          <div class="role-card reveal reveal-delay-2">
+            <h4>Orang Tua / Wali</h4>
+            <ul class="role-feats">
+              <li>Pantau saldo jajan real-time</li>
+              <li>Rincian belanja anak di kantin</li>
+              <li>Bayar tagihan sekolah</li>
+              <li>Cek tabungan siswa</li>
+            </ul>
+          </div>
+          <div class="role-card reveal reveal-delay-3">
+            <h4>Guru & Staff</h4>
+            <ul class="role-feats">
+              <li>Akses presensi digital</li>
+              <li>Rekap kehadiran otomatis</li>
+              <li>Notifikasi jadwal & tugas</li>
+              <li>Profil digital terintegrasi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICE CALCULATOR -->
+    <section class="calc-section">
+      <div class="calc-inner">
+        <div class="calc-head">
+          <div class="section-label reveal">Kalkulator Biaya</div>
+          <h2 class="section-title reveal reveal-delay-1">Berapa Biaya untuk<br>Lembaga Anda?</h2>
+          <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;text-align:center;">Geser slider sesuai jumlah siswa. Harga sudah all-in, tidak ada biaya tambahan.</p>
+        </div>
+
+        <div class="calc-box reveal reveal-delay-1">
+          <div class="calc-top">
+            <div class="calc-label">
+              <span>Jumlah Siswa</span>
+              <span class="calc-val-display" id="calcDisplay">200 siswa</span>
+            </div>
+            <input type="range" id="calcSlider" min="50" max="2000" step="50" value="200" />
+            <div class="range-marks">
+              <span>50</span>
+              <span>500</span>
+              <span>1.000</span>
+              <span>1.500</span>
+              <span>2.000</span>
+            </div>
+          </div>
+          <div class="calc-bottom">
+            <div class="calc-result-item">
+              <div class="calc-result-label">Harga per Siswa</div>
+              <div class="calc-result-num">Rp 12.500</div>
+              <div class="calc-result-sub">per tahun</div>
+            </div>
+            <div class="calc-result-item highlight">
+              <div class="calc-result-label">Total per Tahun</div>
+              <div class="calc-result-num" id="calcTotal">Rp 2.500.000</div>
+              <div class="calc-result-sub">semua fitur sudah termasuk</div>
+            </div>
+            <div class="calc-result-item">
+              <div class="calc-result-label">Per Bulan</div>
+              <div class="calc-result-num" id="calcMonthly">Rp 208.333</div>
+              <div class="calc-result-sub">setara secangkir kopi/bulan</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:24px;" class="reveal reveal-delay-2">
+          <a href="https://wa.me/628161112148?text=Halo%20saya%20mau%20tanya%20harga%20SkolaPay%20untuk%20sekolah%20saya" class="btn btn-solid">
+            <i class="bx bxl-whatsapp"></i> Konsultasi Gratis
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="harga" class="pricing">
+      <div class="pricing-inner">
+        <div class="pricing-head">
+          <div class="section-label reveal">Harga & Paket</div>
+          <h2 class="section-title reveal reveal-delay-1">Transparan.<br>Terjangkau. Beres.</h2>
+          <p class="section-desc reveal reveal-delay-2">Satu harga, semua fitur. Tidak ada biaya tersembunyi. Anda hanya bayar per siswa per tahun.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Main Plan -->
+          <div class="price-main reveal">
+            <div class="price-badge">
+              <i class="bx bxs-crown"></i> Paling Laris
+            </div>
+            <div class="price-title">Sistem SkolaPay Pro</div>
+            <div class="price-sub">Solusi "Terima Beres" berbasis Web. Tanpa install, langsung jalan.</div>
+            <div class="price-num">
+              <span class="price-rp">Rp 12.500</span>
+              <span class="price-unit">/ siswa / tahun</span>
+            </div>
+            <div class="price-slash">Harga normal Rp 25.000/siswa/tahun</div>
+            <div class="price-divider"></div>
+            <ul class="price-feats">
+              <li><i class="bx bx-server"></i> <span>Gratis Cloud Server Premium</span></li>
+              <li><i class="bx bx-globe"></i> <span>Subdomain Gratis (.skolapay.com)</span></li>
+              <li><i class="bx bx-desktop"></i> <span>Akses Multi-Role (Admin, Guru, Kantin, Wali)</span></li>
+              <li><i class="bx bx-qr-scan"></i> <span>Kasir Kantin Cashless</span></li>
+              <li><i class="bx bx-piggy-bank"></i> <span>Tabungan & SPP Terintegrasi</span></li>
+              <li><i class="bx bx-mobile-alt"></i> <span>Dashboard Orang Tua Real-time</span></li>
+              <li><i class="bx bx-bar-chart-alt-2"></i> <span>Laporan Keuangan Otomatis</span></li>
+              <li><i class="bx bx-support"></i> <span>Support Teknis Full Maintenance</span></li>
+            </ul>
+            <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20berlangganan%20SkolaPay" class="btn btn-solid" style="width:100%;justify-content:center;padding:16px">
+              <i class="bx bxl-whatsapp"></i> Berlangganan Sekarang
+            </a>
+          </div>
+
+          <!-- Add-on: Student Card -->
+          <div class="price-addon reveal reveal-delay-1">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px">Add-on Fisik</div>
+
+            <!-- Student Card Mockup -->
+            <div class="student-card">
+              <div class="sc-logo">
+                <i class="bx bxs-wallet-alt"></i> SkolaPay
+              </div>
+              <div class="sc-body">
+                <div class="sc-photo"><i class="bx bxs-user"></i></div>
+                <div class="sc-role">Siswa / Student</div>
+                <div class="sc-name">Budi<br>Santoso</div>
+                <div class="sc-nis">88210044</div>
+              </div>
+              <div class="sc-footer">
+                <div class="sc-qr"><i class="bx bx-qr"></i></div>
+                <div class="sc-valid">
+                  <span>Berlaku / Valid</span>
+                  <div class="sc-year">2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="addon-price-wrap">
+              <span class="addon-price-num">Rp 30.000</span>
+              <span class="addon-price-unit"> / kartu</span>
+            </div>
+            <div class="addon-note">Termasuk Tali Custom.<br>Sekali beli untuk masa sekolah.</div>
+
+            <a href="https://wa.me/628161112148?text=Halo%20saya%20mau%20pesan%20kartu%20siswa%20SkolaPay" class="btn btn-wa" style="width:100%;justify-content:center">
+              <i class="bx bxl-whatsapp"></i> Pesan Kartu
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimoni" class="testimonials" style="display:none">
+      <div class="testimonials-inner">
+        <div class="testimonials-head">
+          <div class="section-label reveal">Kata Mereka</div>
+          <h2 class="section-title reveal reveal-delay-1">Dipercaya Lembaga<br>di Seluruh Indonesia</h2>
+        </div>
+
+        <div class="testi-grid">
+          <div class="testi-card reveal">
+            <div class="testi-stars">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="testi-quote">Dulu kami repot banget rekap SPP tiap bulan, bisa 2-3 hari kerja. Sekarang cukup buka dashboard, semua sudah tersaji. Orang tua siswa juga senang bisa pantau dari HP.</p>
+            <div class="testi-person">
+              <div class="testi-avatar">SR</div>
+              <div>
+                <div class="testi-name">Siti Rahayu, S.Pd</div>
+                <div class="testi-school">SMP Islam Al-Hikmah, Bekasi</div>
+              </div>
+              <span class="testi-role-badge">Bendahara</span>
+            </div>
+          </div>
+
+          <div class="testi-card reveal reveal-delay-1">
+            <div class="testi-stars">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="testi-quote">Kantin kami jauh lebih rapi sekarang. Tidak ada lagi uang kembalian kurang, tidak ada lagi siswa berhutang. Laporan penjualan langsung ada setiap hari, saya bisa fokus masak.</p>
+            <div class="testi-person">
+              <div class="testi-avatar" style="background:var(--amber);border-color:var(--amber-light);">BW</div>
+              <div>
+                <div class="testi-name">Bu Wati</div>
+                <div class="testi-school">MA Nurul Ulum, Malang</div>
+              </div>
+              <span class="testi-role-badge">Kantin</span>
+            </div>
+          </div>
+
+          <div class="testi-card reveal reveal-delay-2">
+            <div class="testi-stars">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="testi-quote">Sebagai orang tua, saya tenang karena bisa lihat anak saya jajan apa saja. Topup saldo juga mudah, tinggal transfer. Anak tidak perlu bawa uang tunai ke pesantren lagi.</p>
+            <div class="testi-person">
+              <div class="testi-avatar" style="background:#7c3aed;border-color:#ede9fe;">AP</div>
+              <div>
+                <div class="testi-name">Ahmad Pratama</div>
+                <div class="testi-school">Orang Tua Santri, Pondok Al-Amin</div>
+              </div>
+              <span class="testi-role-badge">Orang Tua</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+      <div class="faq-inner">
+        <div class="faq-head">
+          <div class="section-label reveal">FAQ</div>
+          <h2 class="section-title reveal reveal-delay-1">Pertanyaan<br>yang Sering Muncul</h2>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              Apa yang dimaksud berlangganan per tahun?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Sistem SkolaPay adalah layanan berbasis sewa (SaaS). Biaya <strong>Rp 12.500/siswa/tahun</strong> sudah mencakup biaya sewa server (hosting), subdomain sekolah (.skolapay.com), dan biaya maintenance. Anda tidak perlu memikirkan biaya infrastruktur IT lagi.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-1">
+            <button class="faq-q" aria-expanded="false">
+              Apakah kartu siswa harus beli setiap tahun?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                <strong>Tidak.</strong> Kartu siswa hanya dibeli SEKALI selama siswa bersekolah. Anda hanya perlu membeli kartu baru untuk siswa baru atau jika ada kartu yang hilang/rusak.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-2">
+            <button class="faq-q" aria-expanded="false">
+              Apa keuntungan kartu siswa SkolaPay?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Selain sebagai kartu identitas resmi, kartu ini berfungsi sebagai alat pembayaran di kantin (pengganti uang tunai) dan opsional sebagai kartu absensi digital. Ini meminimalisir uang jajan hilang dan orang tua bisa memantau jajan anak dari HP.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-3">
+            <button class="faq-q" aria-expanded="false">
+              Jika tidak perpanjang langganan, bagaimana datanya?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Data sekolah adalah milik Anda sepenuhnya. Kami menyediakan fitur <strong>Export Data</strong> sehingga Anda bisa mengunduh seluruh data keuangan dan siswa kapan saja.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              Apakah support printer thermal?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Ya! Sistem kami kompatibel dengan berbagai jenis printer thermal 58mm Bluetooth maupun USB untuk mencetak struk transaksi kantin maupun bukti pembayaran SPP.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-1">
+            <button class="faq-q" aria-expanded="false">
+              Apakah bisa digunakan di pesantren atau boarding school?
+              <span class="faq-icon"><i class="bx bx-plus"></i></span>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Sangat bisa! SkolaPay dirancang untuk sekolah reguler, pesantren, maupun boarding school. Sistem cashless justru sangat ideal untuk lingkungan asrama karena mengurangi risiko uang tunai siswa hilang.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <div class="cta-inner">
+        <h2 class="reveal">Siap Modernisasi Keuangan Lembaga Anda?</h2>
+        <p class="reveal reveal-delay-1">Mulai dengan demo gratis. Tim kami siap membantu onboarding dari nol sampai sistem berjalan lancar.</p>
+        <div class="cta-actions reveal reveal-delay-2">
+          <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20demo%20gratis%20SkolaPay" class="btn btn-white">
+            <i class="bx bxl-whatsapp"></i> Minta Demo Gratis
+          </a>
+          <a href="tel:+628161112148" class="btn" style="background:transparent;color:white;border-color:rgba(255,255,255,0.4);box-shadow:none">
+            <i class="bx bx-phone"></i> 0816-1112-148
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <div class="footer-logo-icon"><i class="bx bxs-wallet-alt"></i></div>
+            <span class="footer-logo-text">SkolaPay</span>
+          </a>
+          <p>Platform keuangan cashless terintegrasi untuk sekolah, pesantren, dan lembaga pendidikan profesional di Indonesia.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn"><i class="bx bxl-instagram"></i></a>
+            <a href="#" class="social-btn"><i class="bx bxl-facebook"></i></a>
+            <a href="https://wa.me/628161112148" class="social-btn"><i class="bx bxl-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="#fitur">Fitur Lengkap</a></li>
+            <li><a href="#cara-kerja">Cara Kerja</a></li>
+            <li><a href="#harga">Harga</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Untuk Siapa</h5>
+          <ul>
+            <li><a href="#">Sekolah Reguler</a></li>
+            <li><a href="#">Pesantren</a></li>
+            <li><a href="#">Boarding School</a></li>
+            <li><a href="#">Madrasah</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Kontak</h5>
+          <ul>
+            <li><a href="https://wa.me/628161112148">WhatsApp</a></li>
+            <li><a href="tel:+628161112148">0816-1112-148</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#5f373a3333301f2c3430333e2f3e26713c3032"><span class="__cf_email__" data-cfemail="b1d9d4dddddef1c2dadeddd0c1d0c89fd2dedc">[email&#160;protected]</span></a></li>
+            <li><a href="#">skolapay.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SkolaPay. All rights reserved.</p>
+        <span>Platform Digital Akurasiudara.</span>
+      </div>
+    </footer>
+
+    <!-- WA FLOATING BUTTON -->
+    <div class="wa-float">
+      <div class="wa-float-tooltip">Chat langsung via WhatsApp</div>
+      <a href="https://wa.me/628161112148?text=Halo%20saya%20ingin%20tahu%20lebih%20lanjut%20tentang%20SkolaPay" class="wa-float-btn" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+        <i class="bx bxl-whatsapp"></i>
+      </a>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+      // ===== NAVBAR SCROLL =====
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      });
+
+      // ===== PRICE CALCULATOR =====
+      const slider = document.getElementById('calcSlider');
+      const display = document.getElementById('calcDisplay');
+      const totalEl = document.getElementById('calcTotal');
+      const monthlyEl = document.getElementById('calcMonthly');
+
+      function formatRp(num) {
+        return 'Rp ' + Math.round(num).toLocaleString('id-ID');
+      }
+
+      function updateCalc() {
+        const siswa = parseInt(slider.value);
+        const harga = 12500;
+        const total = siswa * harga;
+        const monthly = total / 12;
+        display.textContent = siswa.toLocaleString('id-ID') + ' siswa';
+        totalEl.textContent = formatRp(total);
+        monthlyEl.textContent = formatRp(monthly);
+      }
+
+      if (slider) {
+        slider.addEventListener('input', updateCalc);
+        updateCalc();
+      }
+
+      // ===== HAMBURGER MENU =====
+      const btn = document.getElementById('hamburgerBtn');
+      const menu = document.getElementById('mobileMenu');
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('open');
+      });
+
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => menu.classList.remove('open'));
+      });
+
+      // ===== SCROLL REVEAL =====
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        revealObserver.observe(el);
+      });
+
+      // ===== COUNTER ANIMATION =====
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.dataset.counted) {
+            entry.target.dataset.counted = true;
+            const target = parseInt(entry.target.dataset.target);
+            const suffix = entry.target.dataset.suffix || '';
+            let start = 0;
+            const duration = 1800;
+            const step = 16;
+            const increment = target / (duration / step);
+
+            const timer = setInterval(() => {
+              start += increment;
+              if (start >= target) {
+                start = target;
+                clearInterval(timer);
+              }
+              entry.target.textContent = Math.floor(start).toLocaleString('id') + (suffix ? suffix : (target >= 97 ? '%' : ''));
+            }, step);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+        counterObserver.observe(el);
+      });
+
+      // Fix stat suffix
+      document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+        const t = parseInt(el.dataset.target);
+        if (t === 98) {
+          el.dataset.suffix = '%';
+        } else if (t === 24) {
+          el.dataset.suffix = '/7';
+        } else if (t === 1200) {
+          el.dataset.suffix = '+';
+        } else {
+          el.dataset.suffix = '';
+        }
+      });
+
+      // ===== FAQ =====
+      document.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+
+          if (!isOpen) {
+            item.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+          } else {
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+
+      // ===== ACTIVE NAV HIGHLIGHT ON SCROLL =====
+      const sections = document.querySelectorAll('section[id], div[id]');
+      const navLinks = document.querySelectorAll('.nav-links a');
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.remove('active-nav');
+              if (link.getAttribute('href') === '#' + entry.target.id) {
+                link.classList.add('active-nav');
+              }
+            });
+          }
+        });
+      }, { threshold: 0.4 });
+
+      sections.forEach(s => sectionObserver.observe(s));
+
+      // ===== SMOOTH SCROLL FOR ALL ANCHOR LINKS =====
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // ===== HERO ENTRANCE ANIMATION =====
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), 100 + i * 120);
+        });
+      });
+
+    </script>
+  </body>
+</html>
